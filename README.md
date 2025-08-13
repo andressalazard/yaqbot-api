@@ -35,3 +35,9 @@ Run the following to generate tsconfig.json
 ```bash
     npx tsc --init
 ```
+
+Run the following to install PostgreSQL client for Node.js and types for Typescript
+
+```bash
+    npm install pg @types/pg
+```
