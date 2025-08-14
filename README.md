@@ -41,3 +41,9 @@ Run the following to install PostgreSQL client for Node.js and types for Typescr
 ```bash
     npm install pg @types/pg
 ```
+
+Run the following to install Zod
+
+```bash
+    npm install zod
+```
