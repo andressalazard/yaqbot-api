@@ -6,12 +6,17 @@ import { AuthService } from '../services/auth.service';
 export class AuthController {
   static async register(req: Request, res: Response): Promise<void> {
     try {
-      ValidateDto(CreateUserDto)(req, res, async () => {
-        const { username, email, password, role } = req.body;
+      const { username, email, password, role } = req.body;
 
-        const token = await AuthService.register({ username, email, password, role });
-        res.json(token);
-      });
+      const token = await AuthService.register({ username, email, password, role });
+      res.json(token);
+
+      //   ValidateDto(CreateUserDto)(req, res, async () => {
+      //     const { username, email, password, role } = req.body;
+
+      //     const token = await AuthService.register({ username, email, password, role });
+      //     res.json(token);
+      //   });
     } catch (error) {
       res.status(500).json({ message: 'Error interno del servidor', error: error instanceof Error ? error.message : 'error desconocido' });
     }

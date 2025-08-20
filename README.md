@@ -47,3 +47,10 @@ Run the following to install Zod
 ```bash
     npm install zod
 ```
+
+Run the following to install swagger
+
+```bash
+    npm install swagger-jsdoc swagger-ui-express
+    npm install @types/swagger-ui-express @types/swagger-jsdoc --save-dev
+```
