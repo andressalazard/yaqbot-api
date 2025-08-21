@@ -35,3 +35,22 @@ Run the following to generate tsconfig.json
 ```bash
     npx tsc --init
 ```
+
+Run the following to install PostgreSQL client for Node.js and types for Typescript
+
+```bash
+    npm install pg @types/pg
+```
+
+Run the following to install Zod
+
+```bash
+    npm install zod
+```
+
+Run the following to install swagger
+
+```bash
+    npm install swagger-jsdoc swagger-ui-express
+    npm install @types/swagger-ui-express @types/swagger-jsdoc --save-dev
+```
