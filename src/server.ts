@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from './config/swagger';
 
+console.log(JSON.stringify(swaggerDocs, null, 2));
 dotenv.config();
 
 const app = express();
@@ -21,6 +22,17 @@ app.use((req, res, next) => {
   console.log(`[${req.method}] ${req.url}`);
   next();
 });
+
+/**
+ * @swagger
+ * /test:
+ *   get:
+ *     summary: Ruta de prueba
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+app.get('/test', (req, res) => res.send('ok'));
 
 app.get('/', (req, res) => {
   res.send('Servidor funcionando correctamente');
