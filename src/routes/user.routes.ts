@@ -20,4 +20,33 @@ const router = Router();
  */
 router.get('', UserController.getAllUsers);
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *    get:
+ *      summary: Retrieve a user by Id
+ *      tags: [Users]
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: string
+ *          required: true
+ *          description: The user Id
+ *      responses:
+ *        200:
+ *          description: A user object
+ *          content:
+ *           application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/User'
+ *        400:
+ *          description: Bad request, user Id is required
+ *        404:
+ *          description: The User was not found
+ *        500:
+ *          description: Internal server error
+ * */
+router.get('/:id', UserController.getUserById);
+
 export default router;
