@@ -23,17 +23,6 @@ app.use((req, res, next) => {
   next();
 });
 
-/**
- * @swagger
- * /test:
- *   get:
- *     summary: Ruta de prueba
- *     responses:
- *       200:
- *         description: OK
- */
-app.get('/test', (req, res) => res.send('ok'));
-
 app.get('/', (req, res) => {
   res.send('Servidor funcionando correctamente');
 });

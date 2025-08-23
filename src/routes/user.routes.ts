@@ -23,30 +23,66 @@ router.get('', UserController.getAllUsers);
 /**
  * @swagger
  * /api/users/{id}:
- *    get:
- *      summary: Retrieve a user by Id
- *      tags: [Users]
- *      parameters:
- *        - in: path
- *          name: id
- *          schema:
- *            type: string
- *          required: true
- *          description: The user Id
- *      responses:
- *        200:
- *          description: A user object
- *          content:
+ *   get:
+ *     summary: Retrieve a user by Id
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user Id
+ *     responses:
+ *       200:
+ *         description: A user object
+ *         content:
  *           application/json:
- *               schema:
- *                 $ref: '#/components/schemas/User'
- *        400:
- *          description: Bad request, user Id is required
- *        404:
- *          description: The User was not found
- *        500:
- *          description: Internal server error
- * */
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request, user Id is required
+ *       404:
+ *         description: The User was not found
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/:id', UserController.getUserById);
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   patch:
+ *     summary: Update user data by Id
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user Id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateUser'
+ *     responses:
+ *       200:
+ *         description: A user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request, user Id is required
+ *       404:
+ *         description: The User was not found
+ *       500:
+ *         description: Internal server error
+ */
+router.patch('/:id', UserController.updateUser);
 export default router;

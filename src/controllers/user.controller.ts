@@ -30,5 +30,23 @@ export class UserController {
     }
   }
 
-  /*POST*/
+  /*PATCH*/
+  static async updateUser(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        res.status(400).json({ message: 'Id del usuario es requerido' });
+        return;
+      }
+      const updatedUser = await UserService.updateUser(id, req.body);
+
+      res.status(200).json({ updatedUser });
+    } catch (error) {
+      if (error instanceof Error && error.message === 'Usuario no encontrado') {
+        res.status(404).json({ message: 'Usuario no encontrado' });
+      } else {
+        res.status(500).json({ message: 'Error al actualizar el usuario', error: error instanceof Error ? error.message : 'Error desconocido' });
+      }
+    }
+  }
 }
