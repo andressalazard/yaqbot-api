@@ -85,4 +85,31 @@ router.get('/:id', UserController.getUserById);
  *         description: Internal server error
  */
 router.patch('/:id', UserController.updateUser);
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Delete user by Id
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user Id
+ *     responses:
+ *       200:
+ *         description: A json object
+ *       400:
+ *         description: Bad request, user Id is required
+ *       404:
+ *         description: The User was not found
+ *       500:
+ *         description: Internal server error
+ */
+
+router.delete('/:id', UserController.deleteUser);
 export default router;

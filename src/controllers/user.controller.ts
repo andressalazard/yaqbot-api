@@ -49,4 +49,23 @@ export class UserController {
       }
     }
   }
+
+  /*DELETE*/
+  static async deleteUser(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        res.status(400).json({ message: 'Id del usuario es requerido' });
+        return;
+      }
+      const result = UserService.deleteUser(id);
+      res.json(result);
+    } catch (error) {
+      if (error instanceof Error && error.message === 'Usuario no encontrado') {
+        res.status(404).json({ message: 'Usuario no encontrado' });
+      } else {
+        res.status(500).json({ message: 'Error al borrar el usuario', error: error instanceof Error ? error.message : 'Error desconocido' });
+      }
+    }
+  }
 }
