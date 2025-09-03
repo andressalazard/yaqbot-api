@@ -6,7 +6,6 @@ import authRoutes from './routes/auth.routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from './config/swagger';
 
-console.log(JSON.stringify(swaggerDocs, null, 2));
 dotenv.config();
 
 const app = express();
