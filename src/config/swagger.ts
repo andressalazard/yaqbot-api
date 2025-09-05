@@ -1,8 +1,8 @@
-import { info } from 'console';
+import path from 'path';
 import swaggerJSDoc from 'swagger-jsdoc';
 
 const swaggerOptions = {
-  swaggerDefinition: {
+  definition: {
     openapi: '3.0.0',
     info: {
       title: 'YAQBOT API Documentation',
@@ -10,10 +10,30 @@ const swaggerOptions = {
       description: 'API documentation for YAQBOT, API built with TypeScript and Swagger',
     },
     servers: [{ url: 'http://localhost:3000/' }],
+    components: {
+      schemas: {
+        UpdateUser: {
+          type: 'object',
+          properties: {
+            username: { type: 'string' },
+            email: { type: 'string' },
+            role: { type: 'string' },
+          },
+        },
+        User: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            username: { type: 'string' },
+            email: { type: 'string' },
+            role: { type: 'string' },
+          },
+        },
+      },
+    },
   },
-  apis: ['./src/routes/*.ts', './src/controllers/*.ts'],
+  apis: [path.join(__dirname, '../routes/*.ts'), path.join(__dirname, '../docs/tags/*.ts')],
 };
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
-
 export default swaggerDocs;

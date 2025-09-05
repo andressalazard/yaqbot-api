@@ -54,3 +54,16 @@ Run the following to install swagger
     npm install swagger-jsdoc swagger-ui-express
     npm install @types/swagger-ui-express @types/swagger-jsdoc --save-dev
 ```
+
+Run the following to install prisma and setup your prisma project
+
+```bash
+    npm install @prisma/client prisma
+    npx prisma init
+```
+
+Run the following to create/update Prisma migrations
+
+```bash
+    npx prisma migrate dev --name init_db
+```

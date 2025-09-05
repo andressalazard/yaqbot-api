@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';
 
-export const ValidateDto = (schema: ZodSchema) => {
+export const ValidateDto = (schema: ZodSchema<any>) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
+      const validatedData = schema.parse(req.body);
+      req.body = validatedData; //Datos limpios y tipados
+      next();
     } catch (error) {
       if (error instanceof ZodError) {
         const errorMessages = error.issues.map((err) => ({
