@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -50,3 +49,5 @@ model Posts {
   authorId  String
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
+
+
