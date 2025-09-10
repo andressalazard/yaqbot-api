@@ -9,7 +9,7 @@ export class UserService {
     return await prisma.user.findMany({
       select: {
         id: true,
-        name: true,
+        username: true,
         email: true,
         role: true,
         createdAt: true,
@@ -20,7 +20,7 @@ export class UserService {
   static async getPublicUsers() {
     return await prisma.user.findMany({
       select: {
-        name: true,
+        username: true,
       },
     });
   }
