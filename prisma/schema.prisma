@@ -19,35 +19,238 @@ enum Role {
   ADMIN
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum GardenerLevel {
+  AMATEUR
+  INTERMEDIATE
+  PRO
+}
+
 // USER
 model User {
   id        String    @id @default(uuid())
-  username  String
+  username  String    @unique
   email     String    @unique
   password  String
   role      Role      @default(USER)
   createdAt DateTime  @default(now())
-  profile   Profile?
-  posts     Posts[] 
+  profile   UserProfile?
+  posts     Post[] 
+  orders    Order[]
+  carelog   Carelog[]
+  shoppingCart  ShoppingCart?
+
 }
+
 
 // PROFILE
-model Profile {
+model UserProfile {
   id        String    @id  @default(uuid())
-  firstname String?
-  lastname  String?
-  avatar    String?
-  country   String?
   userId    String    @unique
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+  fullname  String?
+  phone     String?
+  region    String?
+  address   String?
+
+  birthday  DateTime?
+  gender    Gender?
+
+  avatar    String?
+  bio       String?
+  gardernerLevel GardenerLevel @default(AMATEUR)
+
+  socialLinks SocialLinks[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Posts {
+//SOCIALS
+model SocialLinks{
   id        String    @id @default(uuid())
+  profileId String
+  profile   UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+      
+  name      String
+  url       String
+  username  String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+
+model Post {
+  id        String    @id @default(uuid())
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String    
+  
   title     String?   @db.VarChar(100)
   content   String?   @db.Text
-  authorId  String
-  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
 }
 
+/***************************************************************************************
+****************************************************************************************/
+
+enum Category {
+  PLANT
+  FERTILIZER
+  FLOWERPOT
+  TOOL
+  OTHER
+}
+
+model Product {
+  id              String    @id @default(uuid())
+  name            String
+  description     String    
+  price           Float
+  stock           Int
+  category        Category    
+  image           String[]
+
+  plant           Plant? 
+
+  beOnOrder       OrderDetails[]
+  beOnCart        ShoppingItems[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+enum WateringMode {
+  HIGH
+  MODERATE
+  LOW
+}
+
+enum LightType {
+  FULL_SUNLIGHT     //areas receiving direct sunlight for at least six hours a day
+  PARTIAL_LIGHT     //condition where plants receive filtered sunlight or are exposed to sunlight for only part of the day
+  INDIRECT_SUNLIGHT //light that reaches a plant without falling directly on it (indoor plants)
+  DAPPLED_LIGHT     //partial light where sunlight filters through a leaf canopy
+  SHADE             //areas receiving less than four hours of direct sunlight daily
+}
+
+enum Weather {
+  CLEAR
+  CLOUDY
+  PARTIALLY_CLOUDLY
+  OVERCAST
+  GLOOMY
+  BRIGHT
+  DARK
+  FOGGY
+  MISTY
+  HAZY
+  DAMP
+}
+model Plant {
+  id                String        @id  
+  product           Product       @relation(fields:[id], references:[id])
+  name              String
+  type              String
+  maxHeight         Int?
+  wateringMode      WateringMode  @default(LOW)
+  wateringFrequency Int?
+  weather           Weather[]     
+  light             LightType
+  specialCares      String?               
+  
+  carelog           Carelog[]
+
+  createdAt         DateTime      @default(now())
+  updateAt          DateTime      @updatedAt
+}
+
+enum CareType {
+  WATERING
+  PRUNING
+  FERTILIZING
+  CLEANING
+  TRANSPLANT
+}
+
+model Carelog {
+  id                String        @id @default(uuid())
+  userId            String
+  user              User          @relation(fields:[userId], references: [id])    
+
+  plantId           String
+  plant             Plant         @relation(fields: [plantId], references: [id])
+
+  careType          CareType
+  logDate           DateTime      @default(now())
+  comments          String?
+
+  @@index([userId,plantId])
+}
+
+/*******************************************************************************************
+********************************************************************************************/
+
+enum OrderStatus {
+  PLACED
+  CONFIRMED
+  PROCESSING
+  DELIVERED
+}
+
+model Order {
+  id               String          @default(uuid()) @unique
+  userId           String          
+  buyer            User            @relation(fields: [userId],references: [id], onDelete: Cascade)
+  orderDate        DateTime
+  status           OrderStatus
+  deliveryAddress  String?
+  total            Float
+
+  orderDetails     OrderDetails[]
+}
+
+
+model OrderDetails {
+  id              String          @default(uuid())
+  orderId         String          
+  order           Order           @relation(fields:[orderId],references:[id])
+
+  productId       String          
+  product         Product         @relation(fields:[productId],references: [id])
+
+  units           Int
+  unitPrice       Float
+
+  @@index([orderId,productId])
+  @@id([orderId,productId])
+}
+
+
+model ShoppingCart {
+  id             String          @default(uuid()) @unique
+  userId         String          @unique
+  user           User            @relation(fields: [userId], references: [id])
+  shoppingItems  ShoppingItems[]
+}
+
+
+model ShoppingItems {
+  id            String            @default(uuid())
+
+  productId     String
+  product       Product           @relation(fields:[productId],references: [id])
+
+  cartId        String
+  cart          ShoppingCart      @relation(fields:[cartId],references: [id])
+  @@index([productId, cartId])
+  @@id([productId,cartId])
+}
 
