@@ -1,4 +1,3 @@
-import dbpool from '../database/postgresql.database';
 import { AppError } from '../errors/AppError';
 import { prisma } from '../lib/prisma';
 import { UpdatedUserData } from '../types';
@@ -32,8 +31,7 @@ export class UserService {
         profile: {
           select: {
             avatar: true,
-            firstname: true,
-            lastname: true,
+            fullname: true,
           },
         },
       },

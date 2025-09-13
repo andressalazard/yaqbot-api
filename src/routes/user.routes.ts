@@ -112,4 +112,5 @@ router.patch('/:id', UserController.updateUser);
  */
 
 router.delete('/:id', UserController.deleteUser);
+
 export default router;

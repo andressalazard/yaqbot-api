@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
+import profileRoutes from './routes/profile.routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from './config/swagger';
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Log para ver si llegan peticiones
 app.use((req, res, next) => {
