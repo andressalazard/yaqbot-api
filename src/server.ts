@@ -10,7 +10,16 @@ import swaggerDocs from './config/swagger';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));

@@ -1,5 +1,6 @@
 import path from 'path';
 import swaggerJSDoc from 'swagger-jsdoc';
+import { maxLength } from 'zod';
 
 const swaggerOptions = {
   definition: {
@@ -12,21 +13,173 @@ const swaggerOptions = {
     servers: [{ url: 'http://localhost:3000/' }],
     components: {
       schemas: {
-        UpdateUser: {
-          type: 'object',
-          properties: {
-            username: { type: 'string' },
-            email: { type: 'string' },
-            role: { type: 'string' },
-          },
-        },
         User: {
           type: 'object',
           properties: {
-            id: { type: 'string', format: 'uuid' },
-            username: { type: 'string' },
-            email: { type: 'string' },
-            role: { type: 'string' },
+            id: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Unique identifier for the user',
+              example: '693772fe-b6e2-418b-a816-77a6f7521060',
+            },
+            username: {
+              type: 'string',
+              description: `User's chosen username`,
+              example: 'johnnydoe12',
+            },
+            email: {
+              type: 'string',
+              description: `User's own email address`,
+              example: 'john.doe@email.com',
+            },
+            role: {
+              type: 'string',
+              description: 'The role the user takes on the app',
+              enum: ['USER', 'ADMIN'],
+              example: 'USER',
+            },
+          },
+          example: {
+            id: '67cdd1ea-5f1a-44a2-830a-9f70a1bb23b9',
+            username: 'janedoe',
+            email: 'jane.doe@example.com',
+            role: 'USER',
+          },
+        },
+        NewUser: {
+          type: 'object',
+          properties: {
+            username: {
+              type: 'string',
+              description: `The chosen username`,
+              example: 'johnnydoe',
+            },
+            email: {
+              type: 'string',
+              description: `a valid email`,
+              example: 'john.doe123@gmail.com',
+            },
+            password: {
+              type: 'string',
+              description: 'a valid password(at least one lowercase letter, one uppercase letter, one number, one special character)',
+              example: 'jOhn@12',
+            },
+          },
+          example: {
+            username: 'johnnyDoe12',
+            email: 'john.doe.123@gmail.com',
+            example: 'jOhn@12',
+          },
+        },
+        LoggedUser: {
+          type: 'object',
+          properties: {
+            username: {
+              type: 'string',
+              description: 'A username already stored in DB',
+              example: 'johnnyStorm12',
+            },
+            email: {
+              type: 'string',
+              description: 'An email already stored in DB',
+              example: 'the.human.torch@gmail.com',
+            },
+            role: {
+              type: 'string',
+              description: 'The role the user takes on the app',
+              enum: ['USER', 'ADMIN'],
+              example: 'USER',
+            },
+          },
+          example: {
+            username: 'johnnyStorm12',
+            email: 'the.human.torch@gmail.com',
+            role: 'USER',
+          },
+        },
+
+        UpdatedUser: {
+          type: 'object',
+          properties: {
+            username: {
+              type: 'string',
+              description: `The new user's chosen username`,
+              example: 'johndoe',
+            },
+            email: {
+              type: 'string',
+              description: `The new user's email address`,
+              example: 'johndoe123@email.com',
+            },
+          },
+          example: {
+            id: '67cdd1ea-5f1a-44a2-830a-9f70a1bb23b9',
+            username: 'janedoe',
+            email: 'jane.doe@example.com',
+          },
+        },
+
+        Profile: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Unique identifier for the profile',
+              example: '693772fe-b6e2-418b-a816-77a6f7521060',
+            },
+            fullname: {
+              type: 'string',
+              description: 'Firstname and Lastname of the user',
+              example: 'John Doe',
+            },
+            phone: {
+              type: 'string',
+              description: `User's phone number`,
+              example: '+593 990077189',
+            },
+            region: {
+              type: 'string',
+              description: `User's City/State/Country`,
+              example: 'New York, United States',
+            },
+            address: {
+              type: 'string',
+              description: `User's personal address`,
+              example: 'Times Square–42nd Street station',
+            },
+            birthday: {
+              type: 'string',
+              description: `User's birthday`,
+              example: '19-09-1984',
+            },
+            gender: {
+              type: 'string',
+              enum: ['MALE', 'FEMALE', 'OTHER'],
+              example: 'MALE',
+            },
+            avatar: {
+              type: 'string',
+              description: 'URL for User picture',
+            },
+            bio: {
+              type: 'string',
+              description: `User's biography`,
+              example: 'I live in New York since 2004',
+            },
+            gardernerlevel: {
+              type: 'string',
+              description: 'The level of gardener the User has',
+              enum: ['AMATEUR', 'INTERMEDIATE', 'PRO'],
+              example: 'AMATEUR',
+            },
+          },
+          example: {
+            fullname: 'Jane Doe',
+            phone: '+51 2302993939',
+            region: 'Quito, Ecuador',
+            address: 'Main Avenue',
+            birthday: '01-01-1900',
           },
         },
       },

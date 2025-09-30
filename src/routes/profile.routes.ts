@@ -1,7 +1,10 @@
 import { Router } from 'express';
+import multer from 'multer';
+import storage from '../middlewares/multerStorage.middleware';
 import { ProfileController } from '../controllers/profile.controller';
 
 const router = Router();
+const uploadCloudinary = multer({ storage });
 
 //PROFILE
 
@@ -17,6 +20,7 @@ const router = Router();
  *         name: userid
  *         schema:
  *           type: string
+ *           format: uuid
  *         required: true
  *         description: The user Id
  *     responses:
@@ -25,7 +29,7 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/Profile'
  *       400:
  *         description: Bad request, user Id is required
  *       404:
@@ -56,14 +60,14 @@ router.get('/:userid', ProfileController.getProfileByUserId);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/RegisterProfileData'
+ *             $ref: '#/components/schemas/Profile'
  *     responses:
  *       '201':
  *         description: User Profile created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/UserProfile'
+ *               $ref: '#/components/schemas/Profile'
  *       '400':
  *         description: Bad request, user Id is required
  *       '404':
@@ -101,7 +105,7 @@ router.post('/:userid', ProfileController.registerProfile);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/UserProfile'
+ *               $ref: '#/components/schemas/Profile'
  *       '400':
  *         description: Bad request, user Id is required
  *       '404':
@@ -110,5 +114,45 @@ router.post('/:userid', ProfileController.registerProfile);
  *         description: Internal server error
  */
 router.patch('/:userid', ProfileController.updateProfile);
+
+/**
+ * @swagger
+ * /api/profile/photo/{userid}:
+ *   patch:
+ *     summary: Updates user's profile photo
+ *     description: Updates a user avatar photo passing on his userId
+ *     tags:
+ *       - Profile
+ *     consumes:
+ *       - multipart/form-data
+ *     parameters:
+ *       - name: userid
+ *         in: path
+ *         required: true
+ *         description: User ID, necessary for profile modification
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       '201':
+ *         description: User Profile Photo updated successfully
+ *       '400':
+ *         description: Bad request, user Id is required
+ *       '404':
+ *         description: File Image Not Found
+ *       '500':
+ *         description: Internal server error
+ */
+router.patch('/photo/:userid', uploadCloudinary.single('file'), ProfileController.updateProfilePhoto);
 
 export default router;

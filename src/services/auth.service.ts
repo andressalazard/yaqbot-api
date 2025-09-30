@@ -1,6 +1,4 @@
 import bcrypt from 'bcrypt';
-import dbpool from '../database/postgresql.database';
-
 import { generateToken } from '../utils/jwt';
 import { AppError } from '../errors/AppError';
 import { prisma } from '../lib/prisma';
@@ -29,11 +27,7 @@ export class AuthService {
 
     return {
       token: generateToken({ id: user.id, role: user.role }),
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-      },
+      userid: user.id,
     };
   }
 
@@ -42,11 +36,7 @@ export class AuthService {
     if (!user || !(await bcrypt.compare(password, user.password))) throw new AppError('Error de login', 401);
     return {
       token: generateToken({ username: user.username, role: user.role }),
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-      },
+      userid: user.id,
     };
   }
 }

@@ -30,9 +30,10 @@ router.get('', UserController.getAllUsers);
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
+ *           format: uuid
  *         description: The user Id
  *     responses:
  *       200:
@@ -40,7 +41,7 @@ router.get('', UserController.getAllUsers);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/LoggedUser'
  *       400:
  *         description: Bad request, user Id is required
  *       404:
@@ -62,6 +63,7 @@ router.get('/:id', UserController.getUserById);
  *         name: id
  *         schema:
  *           type: string
+ *           format: uuid
  *         required: true
  *         description: The user Id
  *     requestBody:
@@ -69,7 +71,7 @@ router.get('/:id', UserController.getUserById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UpdateUser'
+ *             $ref: '#/components/schemas/UpdatedUser'
  *     responses:
  *       200:
  *         description: A user object
@@ -98,6 +100,7 @@ router.patch('/:id', UserController.updateUser);
  *         name: id
  *         schema:
  *           type: string
+ *           format: uuid
  *         required: true
  *         description: The user Id
  *     responses:

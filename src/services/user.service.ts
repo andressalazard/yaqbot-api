@@ -11,7 +11,6 @@ export class UserService {
         username: true,
         email: true,
         role: true,
-        createdAt: true,
       },
     });
   }
@@ -27,13 +26,10 @@ export class UserService {
   static async getUserById(id: string) {
     const user = await prisma.user.findUnique({
       where: { id },
-      include: {
-        profile: {
-          select: {
-            avatar: true,
-            fullname: true,
-          },
-        },
+      select: {
+        username: true,
+        email: true,
+        role: true,
       },
     });
 
@@ -49,6 +45,7 @@ export class UserService {
       select: {
         username: true,
         email: true,
+        role: true,
       },
     });
 

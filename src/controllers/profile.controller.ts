@@ -56,4 +56,34 @@ export class ProfileController {
       res.status(500).json({ message: 'Error interno del sistema', error });
     }
   }
+
+  static async updateProfilePhoto(req: Request, res: Response): Promise<void> {
+    try {
+      const { userid } = req.params;
+
+      if (!userid) {
+        res.status(400).json({ message: 'Id del usuario es requerido' });
+        return;
+      }
+
+      const file = req.file;
+
+      if (!file) {
+        res.status(404).json({ message: 'No se envió ninguna imagen' });
+        return;
+      }
+
+      const validFormats = ['jpg', 'png', 'jpeg'];
+      const fileExt = file.originalname.split('.').pop();
+
+      if (!validFormats.includes(fileExt?.toLowerCase() || '')) {
+        res.status(400).json({ message: 'La extensión del archivo no es válida. Se permiten JPG, JPEG y PNG' });
+        return;
+      }
+
+      await ProfileService.updateProfilePhoto(userid, file.path);
+    } catch (error) {
+      res.status(500).json({ message: 'Error interno del sistema', error });
+    }
+  }
 }
