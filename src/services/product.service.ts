@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma';
+import { NewProduct } from '../types';
 
 export class ProductService {
   static async getAllProducts() {
@@ -13,5 +14,22 @@ export class ProductService {
         image: true,
       },
     });
+  }
+
+  static async createProduct(data: NewProduct) {
+    const { name, description, price, stock, category, image } = data;
+
+    const newProduct = await prisma.product.create({
+      data: {
+        name,
+        description: description ? description : '',
+        price,
+        stock,
+        category,
+        image,
+      },
+    });
+
+    return newProduct;
   }
 }
