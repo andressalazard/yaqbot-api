@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import { ProfileService } from '../services/profile.service';
+import { ValidateDto } from '../middlewares/validate.middleware';
+import { ProfileDto } from '../dto/profile.dto';
+import { uploadImageCloudinary } from '../config/cloudinary';
 
 export class ProfileController {
   //PROFILE
@@ -27,15 +30,15 @@ export class ProfileController {
   //POST
   static async registerProfile(req: Request, res: Response): Promise<void> {
     try {
-      const { userid } = req.params;
-
-      if (!userid) {
-        res.status(400).json({ message: 'Id del usuario es requerido' });
-        return;
-      }
-
-      const response = await ProfileService.createProfile(userid, req.body);
-      res.json({ message: 'Perfil creado con éxito', response });
+      ValidateDto(ProfileDto)(req, res, async () => {
+        const { userid } = req.params;
+        if (!userid) {
+          res.status(400).json({ message: 'Id del usuario es requerido' });
+          return;
+        }
+        const response = await ProfileService.createProfile(userid, req.body);
+        res.json({ message: 'Perfil creado con éxito', response });
+      });
     } catch (error) {
       res.status(500).json({ message: 'Error interno del sistema', error });
     }
@@ -44,14 +47,15 @@ export class ProfileController {
   //UPDATE
   static async updateProfile(req: Request, res: Response): Promise<void> {
     try {
-      const { userid } = req.params;
-
-      if (!userid) {
-        res.status(400).json({ message: 'Id del usuario es requerido' });
-        return;
-      }
-      const response = await ProfileService.updateProfile(userid, req.body);
-      res.json({ message: 'Perfil modificado con éxito', response });
+      ValidateDto(ProfileDto)(req, res, async () => {
+        const { userid } = req.params;
+        if (!userid) {
+          res.status(400).json({ message: 'Id del usuario es requerido' });
+          return;
+        }
+        const response = await ProfileService.updateProfile(userid, req.body);
+        res.json({ message: 'Perfil modificado con éxito', response });
+      });
     } catch (error) {
       res.status(500).json({ message: 'Error interno del sistema', error });
     }
@@ -72,16 +76,15 @@ export class ProfileController {
         res.status(404).json({ message: 'No se envió ninguna imagen' });
         return;
       }
+      const imageURL = await uploadImageCloudinary(file.path);
 
-      const validFormats = ['jpg', 'png', 'jpeg'];
-      const fileExt = file.originalname.split('.').pop();
-
-      if (!validFormats.includes(fileExt?.toLowerCase() || '')) {
-        res.status(400).json({ message: 'La extensión del archivo no es válida. Se permiten JPG, JPEG y PNG' });
+      if (typeof imageURL !== 'string') {
+        res.status(500).json({ message: 'Error al subir la imagen de perfil.' });
         return;
       }
 
-      await ProfileService.updateProfilePhoto(userid, file.path);
+      await ProfileService.updateProfilePhoto(userid, imageURL);
+      res.status(200).json({ message: 'Foto de perfil actualizada correctamente. ' });
     } catch (error) {
       res.status(500).json({ message: 'Error interno del sistema', error });
     }

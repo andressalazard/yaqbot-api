@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
+import { ValidateDto } from '../middlewares/validate.middleware';
+import { UpdateUserDto } from '../dto/updated-user.dto';
 
 export class UserController {
   /*GET*/
@@ -33,14 +35,15 @@ export class UserController {
   /*PATCH*/
   static async updateUser(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
-      if (!id) {
-        res.status(400).json({ message: 'Id del usuario es requerido' });
-        return;
-      }
-      const updatedUser = await UserService.updateUser(id, req.body);
-
-      res.status(200).json({ updatedUser });
+      ValidateDto(UpdateUserDto)(req, res, async () => {
+        const { id } = req.params;
+        if (!id) {
+          res.status(400).json({ message: 'Id del usuario es requerido' });
+          return;
+        }
+        const updatedUser = await UserService.updateUser(id, req.body);
+        res.status(200).json({ updatedUser });
+      });
     } catch (error) {
       if (error instanceof Error && error.message === 'Usuario no encontrado') {
         res.status(404).json({ message: 'Usuario no encontrado' });

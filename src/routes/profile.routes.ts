@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import storage from '../middlewares/multerStorage.middleware';
 import { ProfileController } from '../controllers/profile.controller';
+import { validateImage } from '../middlewares/validateImage.middleware';
 
 const router = Router();
 const uploadCloudinary = multer({ storage });
