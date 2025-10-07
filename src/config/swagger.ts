@@ -182,6 +182,51 @@ const swaggerOptions = {
             birthday: '01-01-1900',
           },
         },
+
+        Product: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Unique identifier for a product',
+              example: '4a3b4313-8d92-44a8-8145-54e3e51b4bed',
+            },
+            name: {
+              type: 'string',
+              description: `The product's name`,
+              example: 'Black FlowerPot',
+            },
+            description: {
+              type: 'string',
+              description: 'The details about the product',
+              example: 'A pot in which plants and other plants are cultivated and displayed.',
+            },
+            price: {
+              type: 'float',
+              description: 'The price amount of the product',
+              example: '29.90',
+            },
+            stock: {
+              type: 'int',
+              description: 'The number of available units of the product',
+              example: '10',
+            },
+            category: {
+              type: 'string',
+              description: `The category of the product based on it's purpose`,
+              enum: ['PLANT', 'FERTILIZER', 'FLOWERPOT', 'TOOL', 'OTHER'],
+              example: 'FLOWERPOT',
+            },
+          },
+          example: {
+            id: '4a3b4313-8d92-44a8-8145-54e3e51b4bed',
+            name: 'Black FlowerPot',
+            price: '29.90',
+            stock: '10',
+            category: 'FLOWERPOT',
+          },
+        },
       },
     },
   },
