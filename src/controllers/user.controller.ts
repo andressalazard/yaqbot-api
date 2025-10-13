@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { UserService } from '../services/user.service';
-import { ValidateDto } from '../middlewares/validate.middleware';
-import { UpdateUserDto } from '../dto/updated-user.dto';
+import { Request, Response } from "express";
+import { UserService } from "../services/user.service";
+import { ValidateDto } from "../middlewares/validate.middleware";
+import { UpdateUserDto } from "../dto/updated-user.dto";
 
 export class UserController {
   /*GET*/
@@ -10,7 +10,7 @@ export class UserController {
       const users = await UserService.getAllUsers();
       res.json(users);
     } catch (error) {
-      res.status(500).json({ message: 'Error al obtener usuarios', error });
+      res.status(500).json({ message: "Error al obtener usuarios", error });
     }
   }
 
@@ -18,17 +18,53 @@ export class UserController {
     try {
       const { id } = req.params;
       if (!id) {
-        res.status(400).json({ message: 'Id del usuario es requerido' });
+        res.status(400).json({ message: "Id del usuario es requerido" });
         return;
       }
       const user = await UserService.getUserById(id);
       if (!user) {
-        res.status(404).json({ message: 'Usuario no encontrado' });
+        res.status(404).json({ message: "Usuario no encontrado" });
         return;
       }
       res.json(user);
     } catch (error) {
-      res.status(500).json({ Error: 'Error al obtener el usuario', error });
+      res.status(500).json({ Error: "Error al obtener el usuario", error });
+    }
+  }
+
+  static async getUserByEmail(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.params;
+      if (!email) {
+        res.status(400).json({ message: "Email del usuario es requerido" });
+        return;
+      }
+      const user = await UserService.getUserByEmail(email);
+      if (!user) {
+        res.status(404).json({ message: "Usuario no encontrado" });
+        return;
+      }
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener el usuario", error });
+    }
+  }
+
+  static async getUserByUsername(req: Request, res: Response): Promise<void> {
+    try {
+      const { username } = req.params;
+      if (!username) {
+        res.status(400).json({ message: "Username del usuario es requerido" });
+        return;
+      }
+      const user = await UserService.getUserByUsername(username);
+      if (!user) {
+        res.status(404).json({ message: "Usuario no encontrado" });
+        return;
+      }
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener el usuario", error });
     }
   }
 
@@ -38,17 +74,20 @@ export class UserController {
       ValidateDto(UpdateUserDto)(req, res, async () => {
         const { id } = req.params;
         if (!id) {
-          res.status(400).json({ message: 'Id del usuario es requerido' });
+          res.status(400).json({ message: "Id del usuario es requerido" });
           return;
         }
         const updatedUser = await UserService.updateUser(id, req.body);
         res.status(200).json({ updatedUser });
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'Usuario no encontrado') {
-        res.status(404).json({ message: 'Usuario no encontrado' });
+      if (error instanceof Error && error.message === "Usuario no encontrado") {
+        res.status(404).json({ message: "Usuario no encontrado" });
       } else {
-        res.status(500).json({ message: 'Error al actualizar el usuario', error: error instanceof Error ? error.message : 'Error desconocido' });
+        res.status(500).json({
+          message: "Error al actualizar el usuario",
+          error: error instanceof Error ? error.message : "Error desconocido",
+        });
       }
     }
   }
@@ -58,16 +97,19 @@ export class UserController {
     try {
       const { id } = req.params;
       if (!id) {
-        res.status(400).json({ message: 'Id del usuario es requerido' });
+        res.status(400).json({ message: "Id del usuario es requerido" });
         return;
       }
       const result = UserService.deleteUser(id);
       res.json(result);
     } catch (error) {
-      if (error instanceof Error && error.message === 'Usuario no encontrado') {
-        res.status(404).json({ message: 'Usuario no encontrado' });
+      if (error instanceof Error && error.message === "Usuario no encontrado") {
+        res.status(404).json({ message: "Usuario no encontrado" });
       } else {
-        res.status(500).json({ message: 'Error al borrar el usuario', error: error instanceof Error ? error.message : 'Error desconocido' });
+        res.status(500).json({
+          message: "Error al borrar el usuario",
+          error: error instanceof Error ? error.message : "Error desconocido",
+        });
       }
     }
   }
