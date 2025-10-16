@@ -1,6 +1,6 @@
-import { AppError } from "../errors/AppError";
-import { prisma } from "../lib/prisma";
-import { UpdatedUserData } from "../types";
+import { AppError } from '../errors/AppError';
+import { prisma } from '../lib/prisma';
+import { UpdatedUserData } from '../types';
 
 export class UserService {
   //GET
@@ -34,7 +34,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new AppError("Usuario no encontrado", 404);
+      throw new AppError('Usuario no encontrado', 404);
     }
     return user;
   }
@@ -51,7 +51,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new AppError("Usuario no encontrado", 404);
+      throw new AppError('Usuario no encontrado', 404);
     }
     return user;
   }
@@ -67,7 +67,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new AppError("Usuario no encontrado", 404);
+      throw new AppError('Usuario no encontrado', 404);
     }
     return user;
   }
@@ -83,7 +83,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new AppError("Usuario no encontrado", 404);
+      throw new AppError('Usuario no encontrado', 404);
     }
 
     return user;
@@ -94,12 +94,22 @@ export class UserService {
     const existingUser = await prisma.user.findUnique({ where: { id } });
 
     if (!existingUser) {
-      throw new AppError("Usuario no encontrado", 404);
+      throw new AppError('Usuario no encontrado', 404);
+    }
+
+    // Map 'role' string to Prisma Role enum if present
+    const updateData: any = { ...data };
+    if (updateData.role) {
+      // Import Role enum from Prisma client
+
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { Role } = require('../prisma/generated/client'); // adjust path if needed
+      updateData.role = Role[updateData.role as keyof typeof Role] || updateData.role;
     }
 
     return await prisma.user.update({
       where: { id },
-      data, //only updates provided fields
+      data: updateData, //only updates provided fields
       select: {
         id: true,
         username: true,
@@ -114,9 +124,9 @@ export class UserService {
     const existingUser = await prisma.user.findUnique({ where: { id } });
 
     if (!existingUser) {
-      throw new AppError("Usuario no encontrado", 404);
+      throw new AppError('Usuario no encontrado', 404);
     }
     await prisma.user.delete({ where: { id } });
-    return { message: "Usuario eliminado con éxito" };
+    return { message: 'Usuario eliminado con éxito' };
   }
 }

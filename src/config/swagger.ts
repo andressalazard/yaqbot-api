@@ -61,7 +61,8 @@ const swaggerOptions = {
             },
             password: {
               type: 'string',
-              description: 'a valid password(at least one lowercase letter, one uppercase letter, one number, one special character)',
+              description:
+                'a valid password(at least one lowercase letter, one uppercase letter, one number, one special character)',
               example: 'jOhn@12',
             },
           },

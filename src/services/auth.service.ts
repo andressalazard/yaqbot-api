@@ -36,7 +36,8 @@ export class AuthService {
 
     if (!user) throw new AppError('Usuario No encontrado', 401);
 
-    if (!(await bcrypt.compare(password, user.password))) throw new AppError('Contraseña Incorrecta', 401);
+    if (!(await bcrypt.compare(password, user.password)))
+      throw new AppError('Contraseña Incorrecta', 401);
 
     return {
       token: generateToken({ username: user.username, role: user.role }),

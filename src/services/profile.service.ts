@@ -42,7 +42,18 @@ export class ProfileService {
       throw new AppError('Faltan los datos del usuario', 404);
     }
 
-    const { fullname, phone, region, address, birthday, gender, avatar, bio, gardernerLevel, socialLinks } = data;
+    const {
+      fullname,
+      phone,
+      region,
+      address,
+      birthday,
+      gender,
+      avatar,
+      bio,
+      gardernerLevel,
+      socialLinks,
+    } = data;
 
     return await prisma.userProfile.create({
       data: {
@@ -77,9 +88,24 @@ export class ProfileService {
       throw new AppError('Usuario no encontrado', 404);
     }
 
+    // Prepare data for Prisma update
+    const { socialLinks, ...rest } = data;
+    const updateData: any = { ...rest };
+
+    if (socialLinks !== undefined) {
+      updateData.socialLinks = {
+        deleteMany: {}, // Remove all existing links
+        create: socialLinks.map((link) => ({
+          name: link.name ?? '',
+          url: link.url ?? '',
+          username: link.username ?? '',
+        })),
+      };
+    }
+
     return await prisma.userProfile.update({
       where: { userId: userid },
-      data,
+      data: updateData,
       select: {
         id: true,
         fullname: true,
