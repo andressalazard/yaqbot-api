@@ -1,3 +1,6 @@
+/********************************************************
+ * User
+ ********************************************************/
 export interface User {}
 
 export interface UpdatedUserData {
@@ -5,6 +8,10 @@ export interface UpdatedUserData {
   email?: string;
   role?: string;
 }
+
+/********************************************************
+ * Profile
+ ********************************************************/
 
 type userGender = 'MALE' | 'FEMALE' | 'OTHER';
 type gardernerLevels = 'AMATEUR' | 'INTERMEDIATE' | 'PRO';
@@ -41,4 +48,27 @@ export interface UpdateProfileData {
   avatar?: string;
   bio?: string;
   socialLinks?: SocialLinks[];
+}
+
+/******************************************************
+ * Product
+ ******************************************************/
+type productCategory = 'PLANT' | 'FERTILIZER' | 'FLOWERPOT' | 'TOOL' | 'OTHER';
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  category: productCategory;
+  image: string[];
+}
+export interface NewProduct {
+  name: string;
+  description?: string;
+  price: number;
+  stock: number;
+  category: productCategory;
+  image: string[];
 }

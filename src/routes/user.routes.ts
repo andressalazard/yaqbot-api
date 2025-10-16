@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { UserController } from '../controllers/user.controller';
+import { Router } from "express";
+import { UserController } from "../controllers/user.controller";
 
 const router = Router();
 /**
@@ -18,7 +18,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get('', UserController.getAllUsers);
+router.get("", UserController.getAllUsers);
 
 /**
  * @swagger
@@ -30,9 +30,10 @@ router.get('', UserController.getAllUsers);
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
+ *           format: uuid
  *         description: The user Id
  *     responses:
  *       200:
@@ -40,7 +41,7 @@ router.get('', UserController.getAllUsers);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/LoggedUser'
  *       400:
  *         description: Bad request, user Id is required
  *       404:
@@ -48,7 +49,67 @@ router.get('', UserController.getAllUsers);
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', UserController.getUserById);
+router.get("/:id", UserController.getUserById);
+
+/**
+ * @swagger
+ * /api/users/email/{email}:
+ *   get:
+ *     summary: Retrieve a user by email
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user email
+ *     responses:
+ *       200:
+ *         description: A user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoggedUser'
+ *       400:
+ *         description: Bad request, user email is required
+ *       404:
+ *         description: The User was not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/email/:email", UserController.getUserByEmail);
+
+/**
+ * @swagger
+ * /api/users/username/{username}:
+ *   get:
+ *     summary: Retrieve a user by username
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user username
+ *     responses:
+ *       200:
+ *         description: A user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoggedUser'
+ *       400:
+ *         description: Bad request, user username is required
+ *       404:
+ *         description: The User was not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/username/:username", UserController.getUserByUsername);
 
 /**
  * @swagger
@@ -62,6 +123,7 @@ router.get('/:id', UserController.getUserById);
  *         name: id
  *         schema:
  *           type: string
+ *           format: uuid
  *         required: true
  *         description: The user Id
  *     requestBody:
@@ -69,7 +131,7 @@ router.get('/:id', UserController.getUserById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UpdateUser'
+ *             $ref: '#/components/schemas/UpdatedUser'
  *     responses:
  *       200:
  *         description: A user object
@@ -84,7 +146,7 @@ router.get('/:id', UserController.getUserById);
  *       500:
  *         description: Internal server error
  */
-router.patch('/:id', UserController.updateUser);
+router.patch("/:id", UserController.updateUser);
 
 /**
  * @swagger
@@ -98,6 +160,7 @@ router.patch('/:id', UserController.updateUser);
  *         name: id
  *         schema:
  *           type: string
+ *           format: uuid
  *         required: true
  *         description: The user Id
  *     responses:
@@ -111,6 +174,6 @@ router.patch('/:id', UserController.updateUser);
  *         description: Internal server error
  */
 
-router.delete('/:id', UserController.deleteUser);
+router.delete("/:id", UserController.deleteUser);
 
 export default router;

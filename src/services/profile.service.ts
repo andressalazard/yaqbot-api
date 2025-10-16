@@ -38,7 +38,10 @@ export class ProfileService {
       throw new AppError('El usuario ya tiene un perfil creado', 404);
     }
 
-    console.log(data);
+    if (!data) {
+      throw new AppError('Faltan los datos del usuario', 404);
+    }
+
     const { fullname, phone, region, address, birthday, gender, avatar, bio, gardernerLevel, socialLinks } = data;
 
     return await prisma.userProfile.create({
@@ -46,7 +49,7 @@ export class ProfileService {
         user: {
           connect: { id: userId },
         },
-        fullname: fullname,
+        fullname: fullname ?? null,
         phone: phone ?? null,
         region: region ?? null,
         address: address ?? null,
@@ -54,7 +57,7 @@ export class ProfileService {
         gender: gender ?? null,
         avatar: avatar ?? null,
         bio: bio ?? null,
-        gardernerLevel: gardernerLevel,
+        gardernerLevel: gardernerLevel ?? 'AMATEUR',
         socialLinks: {
           create: (socialLinks ?? []).map((link) => ({
             name: link.name ?? '',
@@ -80,6 +83,20 @@ export class ProfileService {
       select: {
         id: true,
         fullname: true,
+      },
+    });
+  }
+
+  static async updateProfilePhoto(userid: string, url: string) {
+    const existingUser = await prisma.user.findUnique({ where: { id: userid } });
+    if (!existingUser) {
+      throw new AppError('Usuario no encontrado', 404);
+    }
+
+    return await prisma.userProfile.update({
+      where: { userId: userid },
+      data: {
+        avatar: url,
       },
     });
   }

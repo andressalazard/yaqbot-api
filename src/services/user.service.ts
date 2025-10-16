@@ -1,6 +1,6 @@
-import { AppError } from '../errors/AppError';
-import { prisma } from '../lib/prisma';
-import { UpdatedUserData } from '../types';
+import { AppError } from "../errors/AppError";
+import { prisma } from "../lib/prisma";
+import { UpdatedUserData } from "../types";
 
 export class UserService {
   //GET
@@ -11,7 +11,6 @@ export class UserService {
         username: true,
         email: true,
         role: true,
-        createdAt: true,
       },
     });
   }
@@ -27,18 +26,48 @@ export class UserService {
   static async getUserById(id: string) {
     const user = await prisma.user.findUnique({
       where: { id },
-      include: {
-        profile: {
-          select: {
-            avatar: true,
-            fullname: true,
-          },
-        },
+      select: {
+        username: true,
+        email: true,
+        role: true,
       },
     });
 
     if (!user) {
-      throw new AppError('Usuario no encontrado', 404);
+      throw new AppError("Usuario no encontrado", 404);
+    }
+    return user;
+  }
+
+  static async getUserByEmail(email: string) {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
+      throw new AppError("Usuario no encontrado", 404);
+    }
+    return user;
+  }
+
+  static async getUserByUsername(username: string) {
+    const user = await prisma.user.findUnique({
+      where: { username },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
+      throw new AppError("Usuario no encontrado", 404);
     }
     return user;
   }
@@ -49,11 +78,12 @@ export class UserService {
       select: {
         username: true,
         email: true,
+        role: true,
       },
     });
 
     if (!user) {
-      throw new AppError('Usuario no encontrado', 404);
+      throw new AppError("Usuario no encontrado", 404);
     }
 
     return user;
@@ -64,7 +94,7 @@ export class UserService {
     const existingUser = await prisma.user.findUnique({ where: { id } });
 
     if (!existingUser) {
-      throw new AppError('Usuario no encontrado', 404);
+      throw new AppError("Usuario no encontrado", 404);
     }
 
     return await prisma.user.update({
@@ -84,9 +114,9 @@ export class UserService {
     const existingUser = await prisma.user.findUnique({ where: { id } });
 
     if (!existingUser) {
-      throw new AppError('Usuario no encontrado', 404);
+      throw new AppError("Usuario no encontrado", 404);
     }
     await prisma.user.delete({ where: { id } });
-    return { message: 'Usuario eliminado con éxito' };
+    return { message: "Usuario eliminado con éxito" };
   }
 }
