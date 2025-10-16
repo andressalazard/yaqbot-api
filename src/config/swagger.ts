@@ -270,9 +270,9 @@ const swaggerOptions = {
           example: {
             name: 'Cucumber',
             description: 'A green vegetable that is served on salads.',
-            price: '10.50',
-            stock: '10',
-            category: 'FLOWER',
+            price: 10.5,
+            stock: 10,
+            category: 'PLANT',
             image: ['http://i.pinimg.com/736x/52/a5/54/52a5548dd2df613a983a4a455a55070e.jpg'],
           },
         },
