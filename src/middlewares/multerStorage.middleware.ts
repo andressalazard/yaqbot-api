@@ -6,7 +6,8 @@ import { extname } from 'path';
 const storage: StorageEngine = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: (req, file) => {
-    const newFilename = Date.now() + '-' + Math.round(Math.random() * 1e9) + '-' + extname(file.originalname);
+    const newFilename =
+      Date.now() + '-' + Math.round(Math.random() * 1e9) + '-' + extname(file.originalname);
 
     return {
       folder: 'yaqbot_photos',

@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
-import { CreatePostDto } from '../dto/create-post.dto';
-import { ValidateDto } from '../middlewares/validate.middleware';
+import { Request, Response } from 'express';
+// import { CreatePostDto } from '../dto/create-post.dto';
+// import { ValidateDto } from '../middlewares/validate.middleware';
 import { PostService } from '../services/post.service';
 
 export class PostController {
@@ -28,21 +28,21 @@ export class PostController {
     }
   }
   //POST
-  static async createPost(req: Request, res: Response, next: NextFunction) {
-    try {
-      ValidateDto(CreatePostDto)(req, res, async () => {
-        const { title, content, authorId } = req.body;
-        const newPost = { title, content, authorId };
-        const response = await PostService.createPost(newPost);
-        res.status(201).json(response);
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error interno del servidor',
-        error: error instanceof Error ? error.message : 'Error desconocido',
-      });
-    }
-  }
+  // static async createPost(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     ValidateDto(CreatePostDto)(req, res, async () => {
+  //       const { title, content, authorId } = req.body;
+  //       const newPost = { title, content, authorId };
+  //       const response = await PostService.createPost(newPost);
+  //       res.status(201).json(response);
+  //     });
+  //   } catch (error) {
+  //     res.status(500).json({
+  //       message: 'Error interno del servidor',
+  //       error: error instanceof Error ? error.message : 'Error desconocido',
+  //     });
+  //   }
+  // }
 
   //UPDATE
 

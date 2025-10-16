@@ -13,7 +13,10 @@ export class AuthController {
         res.json(result);
       });
     } catch (error) {
-      res.status(500).json({ message: 'Error interno del servidor', error: error instanceof Error ? error.message : 'error desconocido' });
+      res.status(500).json({
+        message: 'Error interno del servidor',
+        error: error instanceof Error ? error.message : 'error desconocido',
+      });
     }
   }
 

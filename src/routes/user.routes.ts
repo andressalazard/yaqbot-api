@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { UserController } from "../controllers/user.controller";
+import { Router } from 'express';
+import { UserController } from '../controllers/user.controller';
 
 const router = Router();
 /**
@@ -18,7 +18,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get("", UserController.getAllUsers);
+router.get('', UserController.getAllUsers);
 
 /**
  * @swagger
@@ -49,7 +49,7 @@ router.get("", UserController.getAllUsers);
  *       500:
  *         description: Internal server error
  */
-router.get("/:id", UserController.getUserById);
+router.get('/:id', UserController.getUserById);
 
 /**
  * @swagger
@@ -79,7 +79,7 @@ router.get("/:id", UserController.getUserById);
  *       500:
  *         description: Internal server error
  */
-router.get("/email/:email", UserController.getUserByEmail);
+router.get('/email/:email', UserController.getUserByEmail);
 
 /**
  * @swagger
@@ -109,7 +109,7 @@ router.get("/email/:email", UserController.getUserByEmail);
  *       500:
  *         description: Internal server error
  */
-router.get("/username/:username", UserController.getUserByUsername);
+router.get('/username/:username', UserController.getUserByUsername);
 
 /**
  * @swagger
@@ -146,7 +146,7 @@ router.get("/username/:username", UserController.getUserByUsername);
  *       500:
  *         description: Internal server error
  */
-router.patch("/:id", UserController.updateUser);
+router.patch('/:id', UserController.updateUser);
 
 /**
  * @swagger
@@ -174,6 +174,6 @@ router.patch("/:id", UserController.updateUser);
  *         description: Internal server error
  */
 
-router.delete("/:id", UserController.deleteUser);
+router.delete('/:id', UserController.deleteUser);
 
 export default router;

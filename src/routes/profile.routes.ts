@@ -154,6 +154,10 @@ router.patch('/:userid', ProfileController.updateProfile);
  *       '500':
  *         description: Internal server error
  */
-router.patch('/photo/:userid', uploadCloudinary.single('file'), ProfileController.updateProfilePhoto);
+router.patch(
+  '/photo/:userid',
+  uploadCloudinary.single('file'),
+  ProfileController.updateProfilePhoto
+);
 
 export default router;

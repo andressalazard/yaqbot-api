@@ -4,7 +4,7 @@ import { prisma } from '../lib/prisma';
 
 export class PostService {
   static async getAllPosts() {
-    return await prisma.posts.findMany({
+    return await prisma.post.findMany({
       include: {
         author: {
           select: {
@@ -17,7 +17,7 @@ export class PostService {
   }
 
   static async getAllUserPosts(id: string) {
-    const posts = await prisma.posts.findUnique({
+    const posts = await prisma.post.findUnique({
       where: { id },
       include: {
         author: {
@@ -36,7 +36,7 @@ export class PostService {
 
   static async createPost({ title, content, authorId }: CreatePostDto) {
     const body = { title, content, authorId };
-    const post = await prisma.posts.create({
+    const post = await prisma.post.create({
       data: {
         ...body,
       },

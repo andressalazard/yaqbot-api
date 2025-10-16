@@ -55,5 +55,8 @@ const cropImageToSquare = async (file: Express.Multer.File) => {
   const image = sharp(file.path);
   const metadata = await image.metadata();
   const size = Math.min(metadata.width || 0, metadata.height || 0);
-  return image.extract({ left: 0, top: 0, width: size, height: size }).resize(400, 400).toFile(file.path);
+  return image
+    .extract({ left: 0, top: 0, width: size, height: size })
+    .resize(400, 400)
+    .toFile(file.path);
 };
