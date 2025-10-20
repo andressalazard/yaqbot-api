@@ -280,7 +280,10 @@ const swaggerOptions = {
       },
     },
   },
-  apis: [path.join(__dirname, '../routes/*.ts'), path.join(__dirname, '../docs/tags/*.ts')],
+  apis: [
+    path.join(__dirname, '../routes/*.{ts,js}'),
+    path.join(__dirname, '../docs/tags/*.{ts,js}'),
+  ],
 };
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
