@@ -94,7 +94,7 @@ const swaggerOptions = {
           },
           example: {
             username: 'johnnyStorm12',
-            email: 'the.human.torch@gmail.com',
+            email: 'thehuman.torch@gmail.com',
             role: 'USER',
           },
         },
