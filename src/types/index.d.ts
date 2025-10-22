@@ -72,3 +72,48 @@ export interface NewProduct {
   category: productCategory;
   image: string[];
 }
+
+/******************************************************
+ * Plant
+ ******************************************************/
+
+type wateringMode = 'HIGH' | 'MODERATE' | 'LOW';
+type lightType =
+  | 'FULL_SUNLIGHT'
+  | 'PARTIAL_LIGHT'
+  | 'INDIRECT_SUNLIGHT'
+  | 'DAPPLED_LIGHT'
+  | 'SHADE';
+type weatherType =
+  | 'CLEAR'
+  | 'CLOUDY'
+  | 'PARTIALLY_CLOUDLY'
+  | 'OVERCAST'
+  | 'GLOOMY'
+  | 'BRIGHT'
+  | 'DARK'
+  | 'FOGGY'
+  | 'MISTY'
+  | 'HAZY'
+  | 'DAMP';
+
+export interface NewPlantDetails {
+  id: string;
+  name: string;
+  type: string;
+  maxHeight?: number;
+  wateringMode: wateringMode;
+  wateringFrequency?: number;
+  weather: weatherType[];
+  light: lightType;
+  specialCares?: string;
+}
+
+export interface UserCart {
+  userId: string;
+  shoppingItems: ShoppingItems[];
+}
+
+export interface ShoppingItems {
+  productId: string;
+}
