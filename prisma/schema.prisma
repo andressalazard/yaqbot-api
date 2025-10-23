@@ -44,7 +44,24 @@ model User {
   orders    Order[]
   carelog   Carelog[]
   shoppingCart  ShoppingCart?
+  passwordResets PasswordReset[]
 
+}
+
+// PASSWORD RESET
+model PasswordReset {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  token     String    @unique // Hash del token
+  expiresAt DateTime  // Fecha de expiración (5 minutos)
+  used      Boolean   @default(false) // Si ya fue usado
+  
+  createdAt DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([token])
 }
 
 
