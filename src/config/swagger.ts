@@ -378,6 +378,71 @@ const swaggerOptions = {
               description: 'Unique identifier for a plant',
               example: '4a3b4313-8d92-44a8-8145-54e3e51b4bed',
             },
+            name: {
+              type: 'string',
+              description: `The plant's name`,
+              required: true,
+              example: 'Green Cucumber',
+            },
+            image: {
+              type: 'array',
+              description: 'The image of the new plant',
+              required: true,
+              example: ['http://i.pinimg.com/736x/52/a5/54/52a5548dd2df613a983a4a455a55070e.jpg'],
+            },
+            plant: {
+              type: 'object',
+              description: 'details of the plant',
+              properties: {
+                type: {
+                  type: 'string',
+                  description: 'The type of the plant',
+                  example: 'Indoors plant',
+                },
+                weather: {
+                  type: 'array',
+                  description: 'The different type of weather the plant can be adapted to',
+                  items: {
+                    type: 'string',
+                    enum: [
+                      'CLEAR',
+                      'CLOUDY',
+                      'PARTIALLY_CLOUDLY',
+                      'OVERCAST',
+                      'GLOOMY',
+                      'BRIGHT',
+                      'DARK',
+                      'FOGGY',
+                      'MISTY',
+                      'HAZY',
+                      'DAMP',
+                    ],
+                  },
+                  example: ['CLEAR', 'CLOUDY'],
+                },
+              },
+            },
+          },
+          example: {
+            id: '4a3b4313-8d92-44a8-8145-54e3e51b4bed',
+            name: 'Cucumber',
+            image: ['http://i.pinimg.com/736x/52/a5/54/52a5548dd2df613a983a4a455a55070e.jpg'],
+            plant: {
+              type: 'indoor plant',
+              weather: ['CLEAR', 'CLOUDY'],
+            },
+          },
+        },
+
+        AvailablePlant: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Unique identifier for a plant',
+              example: '4a3b4313-8d92-44a8-8145-54e3e51b4bed',
+            },
             productName: {
               type: 'string',
               description: `The product's name`,

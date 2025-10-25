@@ -25,6 +25,25 @@ export class PlantService {
     });
   }
 
+  static async getPlantsCatalog() {
+    return await prisma.product.findMany({
+      where: {
+        category: 'PLANT',
+      },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        plant: {
+          select: {
+            type: true,
+            weather: true,
+          },
+        },
+      },
+    });
+  }
+
   static async registerPlantDetails(productId: string, newPlantDetails: NewPlantDetails) {
     const product = await prisma.product.findUnique({
       where: { id: productId },

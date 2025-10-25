@@ -16,11 +16,30 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/CatalogPlant'
+ *               $ref: '#/components/schemas/AvailablePlant'
  *       500:
  *         description: Internal server error
  */
 router.get('/', PlantController.getAllPlants);
+
+/**
+ * @swagger
+ * /api/plants/catalog:
+ *   get:
+ *     summary: Retrieve the catalog of plants available on db
+ *     tags:
+ *       - Plant
+ *     responses:
+ *       200:
+ *         description: An array of plants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CatalogPlant'
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/catalog', PlantController.getPlantsCatalog);
 
 /**
  * @swagger

@@ -14,6 +14,15 @@ export class PlantController {
     }
   }
 
+  static async getPlantsCatalog(req: Request, res: Response) {
+    try {
+      const plants = await PlantService.getPlantsCatalog();
+      res.json(plants);
+    } catch (error) {
+      res.status(500).json({ message: 'Error al obtener las plantas' });
+    }
+  }
+
   /*POST*/
   static async registerPlantDetails(req: Request, res: Response) {
     try {
