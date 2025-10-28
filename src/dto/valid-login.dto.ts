@@ -5,9 +5,8 @@ export const ValidLoginDto = z.object({
   password: z
     .string()
     .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      'La contraseña debe incluir al menos una mayúscula, minúscula, un número y un caracter especial'
-    ),
+    .regex(/(?=.*[a-z])/, 'La contraseña debe contener al menos una letra minúscula')
+    .regex(/(?=.*[A-Z])/, 'La contraseña debe contener al menos una letra mayúscula')
+    .regex(/(?=.*\d)/, 'La contraseña debe contener al menos un número'),
 });
 export type ValidLoginDto = z.infer<typeof ValidLoginDto>;
