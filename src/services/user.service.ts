@@ -39,6 +39,8 @@ export class UserService {
     return user;
   }
 
+  static async getUserCart(id: string) {}
+
   static async getUserByEmail(email: string) {
     const user = await prisma.user.findUnique({
       where: { email },
