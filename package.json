@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "postinstall": "prisma generate",
     "lint": "eslint . --ext .ts --fix",
     "format": "prettier --write ."
@@ -29,7 +29,6 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "jest": "^30.0.5",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
@@ -37,7 +36,6 @@
     "sharp": "^0.34.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "zod": "^4.0.17"
@@ -59,11 +57,13 @@
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "jest": "^30.2.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "prisma": "^6.15.0",
     "supertest": "^7.1.4",
-    "typescript": "^5.9.2",
+    "ts-jest": "^29.4.5",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.1"
   }
 }

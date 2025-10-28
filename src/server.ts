@@ -7,6 +7,7 @@ import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
 import profileRoutes from './routes/profile.routes';
 import productRoutes from './routes/product.routes';
+import plantRoutes from './routes/plant.routes';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/plants', plantRoutes);
 
 // Log para ver si llegan peticiones
 app.use((req, res, next) => {
