@@ -1,6 +1,6 @@
 import { AppError } from '../errors/AppError';
 import { prisma } from '../lib/prisma';
-import { NewPlantDetails } from '../types';
+import { NewPlantDetails, newUserPlantRecord } from '../types';
 
 export class PlantService {
   static async getAllPlants() {
@@ -67,6 +67,31 @@ export class PlantService {
         weather,
         light,
         specialCares: specialCares || null,
+      },
+    });
+  }
+
+  static async registerNewPlantOwnership(newRecord: newUserPlantRecord) {
+    const { userid, plant } = newRecord;
+
+    const user = await prisma.user.findUnique({ where: { id: userid } });
+
+    if (!user) {
+      throw new AppError('Usuario no encontrado', 404);
+    }
+
+    const fetchedPlant = await prisma.plant.findUnique({ where: { id: plant.id } });
+
+    if (!fetchedPlant) {
+      throw new AppError('Planta no encontrada', 404);
+    }
+
+    return await prisma.plantOwner.create({
+      data: {
+        userId: userid,
+        plantId: plant.id,
+        nickname: plant.nickname,
+        remindMeFlag: false,
       },
     });
   }

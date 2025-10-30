@@ -434,6 +434,42 @@ const swaggerOptions = {
           },
         },
 
+        NewUserPlantRecord: {
+          type: 'object',
+          properties: {
+            userid: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Unique identifier for a user',
+              example: '4a3b4313-8d92-44a8-8145-54e3e51b4bed',
+            },
+            plant: {
+              type: 'object',
+              description: 'details of the new chosen plant',
+              properties: {
+                id: {
+                  type: 'string',
+                  format: 'uuid',
+                  description: 'Unique identifier for a plant',
+                  example: '693772fe-b6e2-418b-a816-77a6f7521060',
+                },
+                nickname: {
+                  type: 'string',
+                  description: 'The name of the plant chosen by the user',
+                  example: 'Happy Sunshine',
+                },
+              },
+            },
+          },
+          example: {
+            userid: '4a3b4313-8d92-44a8-8145-54e3e51b4bed',
+            plant: {
+              id: '693772fe-b6e2-418b-a816-77a6f7521060',
+              nickname: 'Happy Sunshine',
+            },
+          },
+        },
+
         AvailablePlant: {
           type: 'object',
           properties: {

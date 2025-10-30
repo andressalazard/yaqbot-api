@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { PlantService } from '../services/plant.service';
 import { ValidateDto } from '../middlewares/validate.middleware';
 import { NewPlantDetailsDTO } from '../dto/new-plant-details.dto';
+import { NewPlantOwnershipDTO } from '../dto/new-plant-ownership.dto';
 
 export class PlantController {
   /*GET*/
@@ -39,6 +40,25 @@ export class PlantController {
       });
     } catch (error) {
       res.status(500).json({ message: 'Error al registrar los detalles de la planta' });
+    }
+  }
+
+  static async createNewPlantOwnership(req: Request, res: Response) {
+    try {
+      //ValidateDto(NewPlantOwnershipDTO)(req, res, async () => {
+      const plantRegister = req.body;
+      if (!plantRegister) {
+        res
+          .status(400)
+          .json({ message: 'Los datos del registro de la planta del usuario son obligatorios' });
+        return;
+      }
+
+      const response = await PlantService.registerNewPlantOwnership(plantRegister);
+      res.json(response);
+      //});
+    } catch (error) {
+      res.status(500).json({ message: 'Error al registrar la planta del usuario' });
     }
   }
 }

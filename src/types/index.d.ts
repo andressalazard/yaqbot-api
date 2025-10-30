@@ -117,3 +117,14 @@ export interface UserCart {
 export interface ShoppingItems {
   productId: string;
 }
+
+/******************************************************
+ * PlantOwner
+ ******************************************************/
+export interface newUserPlantRecord {
+  userid: string;
+  plant: {
+    id: string;
+    nickname: string;
+  };
+}

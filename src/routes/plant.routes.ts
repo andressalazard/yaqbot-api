@@ -41,6 +41,39 @@ router.get('/', PlantController.getAllPlants);
  */
 router.get('/catalog', PlantController.getPlantsCatalog);
 
+/**********************************************************
+ * POST
+ **********************************************************/
+/**
+ * @swagger
+ * /api/plants/newownership:
+ *   post:
+ *     summary: Register the user's new plant
+ *     description: Creates a new plant record for the user
+ *     tags:
+ *       - Plant
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NewUserPlantRecord'
+ *     responses:
+ *       '201':
+ *         description: Plant details created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NewUserPlantRecord'
+ *       '400':
+ *         description: Bad request, register data is required
+ *       '404':
+ *         description: User or Plant Not Found
+ *       '500':
+ *         description: Internal server error
+ */
+router.post('/newownership', PlantController.createNewPlantOwnership);
+
 /**
  * @swagger
  * /api/plants/{productid}:
