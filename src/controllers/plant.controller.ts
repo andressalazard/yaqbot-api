@@ -24,6 +24,23 @@ export class PlantController {
     }
   }
 
+  static async getOwnerPlants(req: Request, res: Response): Promise<void> {
+    try {
+      const { userid } = req.params;
+      if (!userid) {
+        res.status(400).json({ message: 'id de usuario no encontrado' });
+        return;
+      }
+
+      const plants = await PlantService.fetchOwnerPlants(userid);
+      res.json(plants);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: 'Error al obtener las plantas registradas del usuario', error });
+    }
+  }
+
   /*POST*/
   static async registerPlantDetails(req: Request, res: Response) {
     try {

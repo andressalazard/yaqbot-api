@@ -44,6 +44,33 @@ export class PlantService {
     });
   }
 
+  static async fetchOwnerPlants(userid: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userid },
+    });
+
+    if (!user) {
+      throw new AppError('Usuario no encontrado', 404);
+    }
+
+    return await prisma.plantOwner.findMany({
+      where: { userId: userid },
+      select: {
+        id: true,
+        nickname: true,
+        status: true,
+        plant: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            weather: true,
+          },
+        },
+      },
+    });
+  }
+
   static async registerPlantDetails(productId: string, newPlantDetails: NewPlantDetails) {
     const product = await prisma.product.findUnique({
       where: { id: productId },

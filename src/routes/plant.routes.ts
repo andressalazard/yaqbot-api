@@ -5,6 +5,33 @@ const router = Router();
 
 /**
  * @swagger
+ * /api/plants/owned-by/{userid}:
+ *   get:
+ *     summary: Retrieve the plants owned by the user
+ *     tags:
+ *       - Plant
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The user Id
+ *     responses:
+ *       200:
+ *         description: An array of plants owned by this user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/OwnedPlant'
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/owned-by/:userid', PlantController.getOwnerPlants);
+
+/**
+ * @swagger
  * /api/plants/:
  *   get:
  *     summary: Retrieve the list of all plants
@@ -46,7 +73,7 @@ router.get('/catalog', PlantController.getPlantsCatalog);
  **********************************************************/
 /**
  * @swagger
- * /api/plants/newownership:
+ * /api/plants/new-ownership:
  *   post:
  *     summary: Register the user's new plant
  *     description: Creates a new plant record for the user
@@ -57,7 +84,7 @@ router.get('/catalog', PlantController.getPlantsCatalog);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/NewUserPlantRecord'
+ *             $ref: '#/components/schemas/NewUserPlantRegister'
  *     responses:
  *       '201':
  *         description: Plant details created successfully
@@ -72,7 +99,7 @@ router.get('/catalog', PlantController.getPlantsCatalog);
  *       '500':
  *         description: Internal server error
  */
-router.post('/newownership', PlantController.createNewPlantOwnership);
+router.post('/new-ownership', PlantController.createNewPlantOwnership);
 
 /**
  * @swagger
