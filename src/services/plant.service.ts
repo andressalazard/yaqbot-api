@@ -71,6 +71,34 @@ export class PlantService {
     });
   }
 
+  static async getOwnedPlantById(ownedPlantId: string) {
+    return await prisma.plantOwner.findUnique({
+      where: { id: ownedPlantId },
+      select: {
+        nickname: true,
+        status: true,
+        createdAt: true,
+        notes: true,
+        userPhotos: true,
+        location: true,
+        remindMeFlag: true,
+        plant: {
+          select: {
+            name: true,
+            type: true,
+            weather: true,
+            light: true,
+            product: {
+              select: {
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   static async registerPlantDetails(productId: string, newPlantDetails: NewPlantDetails) {
     const product = await prisma.product.findUnique({
       where: { id: productId },

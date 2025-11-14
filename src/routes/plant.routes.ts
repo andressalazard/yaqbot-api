@@ -68,6 +68,33 @@ router.get('/', PlantController.getAllPlants);
  */
 router.get('/catalog', PlantController.getPlantsCatalog);
 
+/**
+ * @swagger
+ * /api/plants/owned/{ownedplantid}:
+ *   get:
+ *     summary: Retrieve the plants owned by the user
+ *     tags:
+ *       - Plant
+ *     parameters:
+ *       - in: path
+ *         name: ownedplantid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The user Id
+ *     responses:
+ *       200:
+ *         description: An array of plants owned by this user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/OwnedPlant'
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/owned/:ownedplantid', PlantController.getUserPlantById);
+
 /**********************************************************
  * POST
  **********************************************************/

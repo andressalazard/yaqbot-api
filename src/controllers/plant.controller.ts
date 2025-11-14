@@ -41,6 +41,18 @@ export class PlantController {
     }
   }
 
+  static async getUserPlantById(req: Request, res: Response) {
+    const ownedPlantId = req.params.ownedplantid;
+
+    if (!ownedPlantId) {
+      res.status(400).json({ message: 'El Id de la planta de usuario es necesaria' });
+      return;
+    }
+
+    const response = await PlantService.getOwnedPlantById(ownedPlantId);
+    res.json(response);
+  }
+
   /*POST*/
   static async registerPlantDetails(req: Request, res: Response) {
     try {

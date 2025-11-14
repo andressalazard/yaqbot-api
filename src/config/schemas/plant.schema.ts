@@ -1,5 +1,3 @@
-import { format } from 'path';
-
 export const PlantSchema = {
   NewPlantDetails: {
     type: 'object',
