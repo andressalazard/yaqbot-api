@@ -42,7 +42,7 @@ model User {
   profile   UserProfile?
   posts     Post[] 
   orders    Order[]
-  carelog   Carelog[]
+  plantOwner  PlantOwner[]
   shoppingCart  ShoppingCart?
   passwordResets PasswordReset[]
 
@@ -183,7 +183,7 @@ model Plant {
   light             LightType
   specialCares      String?               
   
-  carelog           Carelog[]
+  plantOwner        PlantOwner[]
 
   createdAt         DateTime      @default(now())
   updateAt          DateTime      @updatedAt
@@ -197,19 +197,43 @@ enum CareType {
   TRANSPLANT
 }
 
+enum StatusType {
+ACTIVE
+SICK
+DEAD
+ARCHIVED  
+}
+
+
+model PlantOwner{
+  id              String        @id @default(uuid())
+  userId          String
+  user            User          @relation(fields:[userId], references: [id])
+
+  plantId         String
+  plant           Plant         @relation(fields:[plantId], references: [id])
+
+  nickname        String
+  status          StatusType    @default(ACTIVE)
+  createdAt       DateTime      @default(now())
+  userPhotos      Json?
+  notes           String[]
+  location        String?
+  remindMeFlag    Boolean
+  carelog         Carelog[]
+}
+
 model Carelog {
   id                String        @id @default(uuid())
-  userId            String
-  user              User          @relation(fields:[userId], references: [id])    
-
-  plantId           String
-  plant             Plant         @relation(fields: [plantId], references: [id])
-
+  plantOwnerId      String
+  plantOwner        PlantOwner    @relation(fields:[plantOwnerId], references: [id])    
   careType          CareType
-  logDate           DateTime      @default(now())
-  comments          String?
-
-  @@index([userId,plantId])
+  careDate          DateTime      @default(now())
+  description       String?
+  amount            Float?    
+  createdAt         DateTime      @default(now()) 
+  updatedAt         DateTime      @updatedAt
+  @@index([plantOwnerId])
 }
 
 /*******************************************************************************************

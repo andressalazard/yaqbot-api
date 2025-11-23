@@ -1,6 +1,6 @@
 import { AppError } from '../errors/AppError';
 import { prisma } from '../lib/prisma';
-import { NewPlantDetails } from '../types';
+import { NewPlantDetails, newUserPlantRecord } from '../types';
 
 export class PlantService {
   static async getAllPlants() {
@@ -44,6 +44,61 @@ export class PlantService {
     });
   }
 
+  static async fetchOwnerPlants(userid: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userid },
+    });
+
+    if (!user) {
+      throw new AppError('Usuario no encontrado', 404);
+    }
+
+    return await prisma.plantOwner.findMany({
+      where: { userId: userid },
+      select: {
+        id: true,
+        nickname: true,
+        status: true,
+        plant: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            weather: true,
+          },
+        },
+      },
+    });
+  }
+
+  static async getOwnedPlantById(ownedPlantId: string) {
+    return await prisma.plantOwner.findUnique({
+      where: { id: ownedPlantId },
+      select: {
+        nickname: true,
+        status: true,
+        createdAt: true,
+        notes: true,
+        userPhotos: true,
+        location: true,
+        remindMeFlag: true,
+        plant: {
+          select: {
+            name: true,
+            type: true,
+            weather: true,
+            light: true,
+            product: {
+              select: {
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   static async registerPlantDetails(productId: string, newPlantDetails: NewPlantDetails) {
     const product = await prisma.product.findUnique({
       where: { id: productId },
@@ -67,6 +122,31 @@ export class PlantService {
         weather,
         light,
         specialCares: specialCares || null,
+      },
+    });
+  }
+
+  static async registerNewPlantOwnership(newRecord: newUserPlantRecord) {
+    const { userid, plant } = newRecord;
+
+    const user = await prisma.user.findUnique({ where: { id: userid } });
+
+    if (!user) {
+      throw new AppError('Usuario no encontrado', 404);
+    }
+
+    const fetchedPlant = await prisma.plant.findUnique({ where: { id: plant.id } });
+
+    if (!fetchedPlant) {
+      throw new AppError('Planta no encontrada', 404);
+    }
+
+    return await prisma.plantOwner.create({
+      data: {
+        userId: userid,
+        plantId: plant.id,
+        nickname: plant.nickname,
+        remindMeFlag: false,
       },
     });
   }
