@@ -128,3 +128,18 @@ export interface newUserPlantRecord {
     nickname: string;
   };
 }
+
+/*
+ORDER
+*/
+
+type OrderStatus = 'PLACED' | 'CONFIRMED' | 'PROCESSING' | 'DELIVERED' | 'CANCELLED';
+export interface NewOrder {
+  userId: string;
+}
+
+export interface OrderItem {
+  productId: string;
+  units: number;
+  unitPrice: number;
+}

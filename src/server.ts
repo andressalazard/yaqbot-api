@@ -10,6 +10,7 @@ import productRoutes from './routes/product.routes';
 import plantRoutes from './routes/plant.routes';
 import weatherRoutes from './routes/weather.router';
 import deviceRoutes from './routes/device.routes';
+import orderRoutes from './routes/order.routes';
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/plants', plantRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/yaqbot', deviceRoutes);
+app.use('/api/order', orderRoutes);
 
 // Log para ver si llegan peticiones
 app.use((req, res, next) => {
