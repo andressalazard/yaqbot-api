@@ -6,7 +6,11 @@ export class OrderService {
     return prisma.order.findMany({
       where: { userId },
       include: {
-        orderDetails: true,
+        orderDetails: {
+          include: {
+            product: true, // Incluye los datos del producto
+          },
+        },
       },
       orderBy: {
         orderDate: 'desc',
@@ -18,7 +22,11 @@ export class OrderService {
     return prisma.order.findUnique({
       where: { id: orderId },
       include: {
-        orderDetails: true,
+        orderDetails: {
+          include: {
+            product: true, // Incluye los datos del producto dentro de orderDetails
+          },
+        },
       },
     });
   }
