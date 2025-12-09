@@ -5,6 +5,33 @@ const router = Router();
 
 /**
  * @swagger
+ * /api/plants/owned-by/{userid}:
+ *   get:
+ *     summary: Retrieve the plants owned by the user
+ *     tags:
+ *       - Plant
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The user Id
+ *     responses:
+ *       200:
+ *         description: An array of plants owned by this user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/OwnedPlant'
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/owned-by/:userid', PlantController.getOwnerPlants);
+
+/**
+ * @swagger
  * /api/plants/:
  *   get:
  *     summary: Retrieve the list of all plants
@@ -40,6 +67,66 @@ router.get('/', PlantController.getAllPlants);
  *         description: Internal server error
  */
 router.get('/catalog', PlantController.getPlantsCatalog);
+
+/**
+ * @swagger
+ * /api/plants/owned/{ownedplantid}:
+ *   get:
+ *     summary: Retrieve the plants owned by the user
+ *     tags:
+ *       - Plant
+ *     parameters:
+ *       - in: path
+ *         name: ownedplantid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The user Id
+ *     responses:
+ *       200:
+ *         description: An array of plants owned by this user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/OwnedPlant'
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/owned/:ownedplantid', PlantController.getUserPlantById);
+
+/**********************************************************
+ * POST
+ **********************************************************/
+/**
+ * @swagger
+ * /api/plants/new-ownership:
+ *   post:
+ *     summary: Register the user's new plant
+ *     description: Creates a new plant record for the user
+ *     tags:
+ *       - Plant
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NewUserPlantRegister'
+ *     responses:
+ *       '201':
+ *         description: Plant details created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NewUserPlantRecord'
+ *       '400':
+ *         description: Bad request, register data is required
+ *       '404':
+ *         description: User or Plant Not Found
+ *       '500':
+ *         description: Internal server error
+ */
+router.post('/new-ownership', PlantController.createNewPlantOwnership);
 
 /**
  * @swagger

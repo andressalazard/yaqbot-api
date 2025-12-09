@@ -8,6 +8,8 @@ import authRoutes from './routes/auth.routes';
 import profileRoutes from './routes/profile.routes';
 import productRoutes from './routes/product.routes';
 import plantRoutes from './routes/plant.routes';
+import weatherRoutes from './routes/weather.router';
+import deviceRoutes from './routes/device.routes';
 
 dotenv.config();
 
@@ -30,6 +32,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/plants', plantRoutes);
+app.use('/api/weather', weatherRoutes);
+app.use('/api/yaqbot', deviceRoutes);
 
 // Log para ver si llegan peticiones
 app.use((req, res, next) => {
