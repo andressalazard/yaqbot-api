@@ -48,8 +48,18 @@ export class ProfileController {
   //UPDATE
   static async updateProfile(req: Request, res: Response): Promise<void> {
     try {
-      ValidateDto(ProfileDto)(req, res, async () => {
+      const { userid } = req.params;
+      if (!userid) {
+        res.status(400).json({ message: 'Id del usuario es requerido' });
+        return;
+      }
+      const response = await ProfileService.updateProfile(userid, req.body);
+      res.json({ message: 'Perfil modificado con éxito', response });
+
+      /*
+      ValidateDto(CreateProfileDto)(req, res, async () => {
         const { userid } = req.params;
+        console.log(req.params);
         if (!userid) {
           res.status(400).json({ message: 'Id del usuario es requerido' });
           return;
@@ -57,7 +67,9 @@ export class ProfileController {
         const response = await ProfileService.updateProfile(userid, req.body);
         res.json({ message: 'Perfil modificado con éxito', response });
       });
+      */
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: 'Error interno del sistema', error });
     }
   }
@@ -78,14 +90,16 @@ export class ProfileController {
         return;
       }
       const imageURL = await uploadImageCloudinary(file.path);
-
+      console.log('URL de la imagen subida:', imageURL);
       if (typeof imageURL !== 'string') {
         res.status(500).json({ message: 'Error al subir la imagen de perfil.' });
         return;
       }
 
       await ProfileService.updateProfilePhoto(userid, imageURL);
-      res.status(200).json({ message: 'Foto de perfil actualizada correctamente. ' });
+      res
+        .status(200)
+        .json({ message: 'Foto de perfil actualizada correctamente. ', imageURL: imageURL });
     } catch (error) {
       res.status(500).json({ message: 'Error interno del sistema', error });
     }

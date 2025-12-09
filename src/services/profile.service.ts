@@ -88,10 +88,18 @@ export class ProfileService {
       throw new AppError('Usuario no encontrado', 404);
     }
 
-    // Prepare data for Prisma update
-    const { socialLinks, ...rest } = data;
+    const { birthday, socialLinks, ...rest } = data;
     const updateData: any = { ...rest };
 
+    // Si birthday viene en el request, procesarlo
+    if (birthday !== undefined) {
+      updateData.birthday = birthday ? new Date(birthday) : null;
+    }
+
+    //const { socialLinks, ...rest } = data;
+    //const updateData: any = { ...rest };
+
+    /*
     if (socialLinks !== undefined) {
       updateData.socialLinks = {
         deleteMany: {}, // Remove all existing links
@@ -102,14 +110,15 @@ export class ProfileService {
         })),
       };
     }
+      */
 
     return await prisma.userProfile.update({
       where: { userId: userid },
       data: updateData,
-      select: {
+      /*select: {
         id: true,
         fullname: true,
-      },
+      },*/
     });
   }
 
