@@ -34,6 +34,26 @@ export class AuthController {
           return;
         }
         const result = await AuthService.login(email, password);
+        console.log('Resultado de login:', result);
+        res.json(result);
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Credenciales incorrectas' });
+    }
+  }
+
+  static async loginAdmin(req: Request, res: Response): Promise<void> {
+    try {
+      ValidateDto(ValidLoginDto)(req, res, async () => {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+          res.status(400).json({ message: 'Correo y contraseña son obligatorias' });
+          return;
+        }
+        const result = await AuthService.loginAdmin(email, password);
+        console.log('Resultado de login:', result);
         res.json(result);
       });
     } catch (error) {

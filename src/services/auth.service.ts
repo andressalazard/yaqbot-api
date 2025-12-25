@@ -37,6 +37,7 @@ export class AuthService {
   static async login(email: string, password: string) {
     try {
       const user = await prisma.user.findUnique({ where: { email } });
+      //console.log(user);
 
       if (!user || !(await bcrypt.compare(password, user.password))) {
         return {
@@ -54,6 +55,36 @@ export class AuthService {
       return {
         token: generateToken({ username: user.username, role: user.role }),
         userid: user.id,
+        role: user.role,
+      };
+    } catch (error) {
+      throw new AppError('Credenciales incorrectas', 401);
+    }
+  }
+
+  static async loginAdmin(email: string, password: string) {
+    try {
+      const user = await prisma.user.findUnique({ where: { email } });
+      //console.log(user);
+
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return {
+          success: false,
+          message: 'Credenciales incorrectas',
+        };
+      }
+
+      if (user.role !== Role.ADMIN) {
+        return {
+          success: false,
+          message: 'Credenciales incorrectas',
+        };
+      }
+
+      return {
+        token: generateToken({ username: user.username, role: user.role }),
+        userid: user.id,
+        role: user.role,
       };
     } catch (error) {
       throw new AppError('Credenciales incorrectas', 401);
@@ -70,6 +101,7 @@ export class AuthService {
   static async forgotPassword(email: string) {
     // 1. Verificar que el usuario existe
     const user = await prisma.user.findUnique({ where: { email } });
+    console.log('Usuario para recuperación:', user);
     if (!user) {
       // Por seguridad, no revelamos si el email existe o no
       return {

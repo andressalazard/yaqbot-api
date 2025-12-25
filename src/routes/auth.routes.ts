@@ -78,6 +78,7 @@ router.post('/register', AuthController.register);
  *         description: Internal server error
  */
 router.post('/login', AuthController.login);
+router.post('/login-admin', AuthController.loginAdmin);
 
 /**
  * @swagger

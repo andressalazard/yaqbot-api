@@ -1,3 +1,4 @@
+import { OrderStatus } from '@prisma/client';
 import { prisma } from '../lib/prisma';
 import { NewOrder, OrderItem } from '../types';
 
@@ -48,6 +49,82 @@ export class OrderService {
       },
       include: {
         orderDetails: true,
+      },
+    });
+  }
+
+  static async deleteOrder(orderId: string) {
+    await prisma.orderDetails.deleteMany({
+      where: { orderId },
+    });
+
+    return prisma.order.delete({
+      where: { id: orderId },
+    });
+  }
+
+  static async updateOrderStatus(orderId: string, status: OrderStatus) {
+    return prisma.order.update({
+      where: { id: orderId },
+      data: { status },
+    });
+  }
+
+  static async getAllOrders() {
+    return prisma.order.findMany({
+      include: {
+        buyer: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            profile: {
+              select: {
+                fullname: true,
+                phone: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+        orderDetails: {
+          include: {
+            product: true,
+          },
+        },
+      },
+      orderBy: {
+        orderDate: 'desc',
+      },
+    });
+  }
+
+  static async getOrdersByStatus(status: OrderStatus) {
+    return prisma.order.findMany({
+      where: { status },
+      include: {
+        buyer: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            profile: {
+              select: {
+                fullname: true,
+                phone: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+        orderDetails: {
+          include: {
+            product: true,
+          },
+        },
+      },
+      orderBy: {
+        orderDate: 'desc',
       },
     });
   }
