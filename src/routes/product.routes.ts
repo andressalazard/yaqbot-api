@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import { ProductController } from '../controllers/product.controller';
+import multer from 'multer';
+import storage from '../middlewares/multerStorage.middleware';
 
 const router = Router();
+const uploadCloudinary = multer({ storage });
 
 /**
  * @swagger
@@ -47,5 +50,6 @@ router.get('', ProductController.getAllProducts);
  *
  */
 router.post('/create', ProductController.addNewProduct);
-
+router.post('/edit', ProductController.editProduct);
+router.patch('/photo/:id', uploadCloudinary.single('file'), ProductController.updateProductPhoto);
 export default router;

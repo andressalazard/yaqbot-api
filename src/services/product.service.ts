@@ -32,4 +32,26 @@ export class ProductService {
 
     return newProduct;
   }
+
+  static async updateProduct(productId: string, data: Partial<NewProduct>) {
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data: {
+        ...data,
+      },
+    });
+
+    return updatedProduct;
+  }
+
+  static async updateProductPhoto(productId: string, imageUrl: string) {
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data: {
+        image: [imageUrl],
+      },
+    });
+
+    return updatedProduct;
+  }
 }

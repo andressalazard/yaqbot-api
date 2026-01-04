@@ -11,7 +11,7 @@ const storage: StorageEngine = new CloudinaryStorage({
 
     return {
       folder: 'yaqbot_photos',
-      allowed_formats: ['jpg', 'png', 'jpeg'],
+      allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
       public_id: newFilename,
     };
   },
